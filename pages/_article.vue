@@ -11,9 +11,11 @@
 import axios from 'axios'
 
 export default {
-  async asyncData ({ store, params }) {
-    let articles = await axios.get(`https://wp.kmr.io/wp-json/wp/v2/posts?slug=${params.article}&_embed`)
-    store.commit('setArticle', articles.data[0])
+  fetch ({ store, params }) {
+    return axios.get(`https://wp.kmr.io/wp-json/wp/v2/posts?slug=${params.article}&_embed`)
+      .then(response => {
+        store.commit('setArticle', response.data[0])
+      })
   },
 
   computed: {

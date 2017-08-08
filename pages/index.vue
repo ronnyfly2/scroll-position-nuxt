@@ -13,9 +13,13 @@
 import axios from 'axios'
 
 export default {
-  async asyncData ({ store }) {
-    let articles = await axios.get('https://wp.kmr.io/wp-json/wp/v2/posts?orderby=date&per_page=20&_embed')
-    store.commit('setArticles', articles.data)
+  fetch ({ store }) {
+    if (!store.state.articles.length) {
+      return axios.get('https://wp.kmr.io/wp-json/wp/v2/posts?orderby=date&per_page=20&_embed')
+        .then(response => {
+          store.commit('setArticles', response.data)
+        })
+    }
   },
 
   computed: {
